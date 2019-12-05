@@ -13,7 +13,7 @@ public class LogisticClassifier extends LinearClassifier {
      * (AIMA Eq. 18.8): w_i \leftarrow w_i+\alpha(y-h_w(x)) \times h_w(x)(1-h_w(x)) \times x_i
      */
     public void update(double[] x, double y, double alpha) {
-        double h = 1.0/(1.0 + Math.exp((-1.0)*VectorOps.dot(weights,x)));
+        double h = eval(x);
 //        System.out.println("cak " + h);
         for (int i = 0; i < weights.length; i++) {
             weights[i] = weights[i] + alpha*(y - h)*x[i]*h*(1-h);

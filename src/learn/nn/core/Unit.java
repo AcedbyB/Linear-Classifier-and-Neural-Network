@@ -10,7 +10,7 @@ import java.util.List;
  */
 abstract public class Unit {
 
-	double delta;
+	public double delta = 0.0;
 	/**
 	 * Return the output value of this Unit.
 	 */

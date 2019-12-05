@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import learn.draw.util.Drawing;
 import learn.nn.core.Example;
 import learn.nn.core.MultiLayerFeedForwardNeuralNetwork;
 import learn.nn.core.NeuralNetwork;
@@ -59,6 +60,7 @@ public class MNISTNN extends MultiLayerFeedForwardNeuralNetwork {
 			}
 		});
 		network.train(trainingSet, epochs, alpha);
+        Drawing.drawLoss(network.accuracy);
 	}
 	
 }

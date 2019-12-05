@@ -3,6 +3,7 @@ package learn.nn.examples;
 import java.io.IOException;
 import java.util.List;
 
+import learn.draw.util.Drawing;
 import learn.nn.core.Connection;
 import learn.nn.core.Example;
 import learn.nn.core.InputUnit;
@@ -113,7 +114,7 @@ public class IrisNN extends MultiLayerFeedForwardNeuralNetwork {
 	}
 
 	public static void main(String[] argv) throws IOException {
-		int epochs = 10000;
+		int epochs = 3000;
 		double alpha = 0.10;
 		if (argv.length > 0) {
 			epochs = Integer.parseInt(argv[0]);
@@ -125,6 +126,8 @@ public class IrisNN extends MultiLayerFeedForwardNeuralNetwork {
 		IrisNN network = new IrisNN();
 		System.out.println("Training for " + epochs + " epochs with alpha=" + alpha);
 		network.train(examples, epochs, alpha);
+		network.addToAccuracy = false;
+		Drawing.drawLoss(network.accuracy);
 		network.dump();
 		double accuracy = network.test(examples);
 		System.out.println("Overall accuracy=" + accuracy);
@@ -153,7 +156,7 @@ public class IrisNN extends MultiLayerFeedForwardNeuralNetwork {
 		System.out.println();
 		System.out.println("Learning Curve testing on all training data");
 		System.out.println("EPOCHS\tACCURACY");
-		for (epochs=100; epochs <= 3000; epochs+=100) {
+		for (epochs=100; epochs <= 10000; epochs+=100) {
 			network.train(examples, epochs, alpha);
 			accuracy = network.test(examples);
 			System.out.format("%d\t%.3f\n",  epochs, accuracy);

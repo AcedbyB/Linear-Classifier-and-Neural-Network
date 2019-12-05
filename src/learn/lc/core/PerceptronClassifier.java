@@ -1,12 +1,10 @@
 package learn.lc.core;
 
-import learn.math.util.VectorOps;
 
 public class PerceptronClassifier extends LinearClassifier {
 
     public PerceptronClassifier(int ninputs) {
         super(ninputs);
-        for (int i = 0; i < weights.length; i++) weights[i] = 0;
     }
 
     /**
@@ -15,8 +13,9 @@ public class PerceptronClassifier extends LinearClassifier {
      */
 
     public void update(double[] x, double y, double alpha) {
-        for (int i = 0; i < weights.length; i++) {
-            weights[i] = weights[i] + alpha * (y - threshold(VectorOps.dot(weights, x))) * x[i];
+        double hw = eval(x);
+        for (int i = 0; i < this.weights.length; i++) {
+            this.weights[i] = this.weights[i] + alpha * (y - hw) * x[i];
         }
     }
 
@@ -25,7 +24,7 @@ public class PerceptronClassifier extends LinearClassifier {
      */
     public double threshold(double z) {
         if (z >= 0) return 1.0;
-        else return 0.0;
+        return 0.0;
     }
 
 }

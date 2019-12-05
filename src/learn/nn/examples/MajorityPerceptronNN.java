@@ -2,6 +2,7 @@ package learn.nn.examples;
 
 import java.util.List;
 
+import learn.draw.util.Drawing;
 import learn.nn.core.*;
 
 /**
@@ -84,6 +85,7 @@ public class MajorityPerceptronNN extends SingleLayerFeedForwardNeuralNetwork {
 		for (int n=nstep; n <= nmax; n+=nstep) {
 			MajorityPerceptronNN network = new MajorityPerceptronNN(ninputs);
 			List<Example> trainingSet = generator.examples(n);
+			network.addToAccuracy = false;
 			network.train(trainingSet, alpha);
 			List<Example> testingSet = generator.examples(n);
 			double accuracy = network.test(testingSet);
@@ -91,12 +93,14 @@ public class MajorityPerceptronNN extends SingleLayerFeedForwardNeuralNetwork {
 			network.dump();
 		}
 		System.out.println();
-		int n = 100;
+		int n = 1000;
 		int k = 10;
 		System.out.println("k-Fold Cross-Validation: n=" + n + ", k=" + k);
 		List<Example> examples = generator.examples(n);
 		MajorityPerceptronNN network = new MajorityPerceptronNN(ninputs);
+		network.addToAccuracy = true;
 		double acc = network.kFoldCrossValidate(examples, k, alpha);
+		Drawing.drawLoss(network.accuracy);
 		System.out.format("average accuracy: %.3f\n", acc);
 	}
 

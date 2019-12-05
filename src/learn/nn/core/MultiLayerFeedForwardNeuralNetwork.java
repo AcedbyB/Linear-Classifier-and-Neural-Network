@@ -1,5 +1,6 @@
 package learn.nn.core;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -114,6 +115,8 @@ abstract public class MultiLayerFeedForwardNeuralNetwork extends FeedForwardNeur
             for (Example example : examples) {
                 train(example, alpha);
             }
+            if(addToAccuracy)
+            accuracy.add(test(examples));
             notifyTrainingEpochCompleted(epoch);
         }
     }
@@ -161,12 +164,14 @@ abstract public class MultiLayerFeedForwardNeuralNetwork extends FeedForwardNeur
         for (int i = 0; i < inputs.length; i++) {
             // a_i <- x_i
             inputs[i].setOutput(example.inputs[i]);
+            inputs[i].delta = 0.0;
         }
         // for l from 2 to L do
         for (int l = 1; l < this.layers.length; l++) {
             // for each node j in layer l do
             for (int j = 0; j < this.layers[l].length; j++) {
                 Unit unit = this.layers[l][j];
+                unit.delta = 0.0;
                 // in_j <- \sum_i w_i,j a_i; a_j <- g(in_j)
                 unit.run();
             }
@@ -181,20 +186,34 @@ abstract public class MultiLayerFeedForwardNeuralNetwork extends FeedForwardNeur
      */
     public void backprop(Example example, double alpha) {
         // This must be implemented by you
-        int l = layers.length;
-        for (int j = 0; j < this.layers[l - 1].length; j++) {
-            double h = this.layers[l - 1][j].getOutput();
-            this.layers[l - 1][j].delta = h * (1 - h) * (example.outputs[j] - h);
+//        HashMap<Unit, Double> delta = new HashMap<>();
+        for (int i = 0; i < this.layers[this.layers.length - 1].length; i++) {
+            Unit cur = this.layers[this.layers.length - 1][i];
+            double error = ((LogisticUnit) cur).activationPrime(((NeuronUnit)cur).getInputSum()) * (example.outputs[i] - cur.getOutput());
+            cur.delta = error;
         }
-        for (int i = l - 2; i > 0; i--) {
-            for(int j = 0; j < layers[i].length; j++) {
-                double h = this.layers[i][j].getOutput();
+        for (int l = this.layers.length - 2; l > 0; l--) {
+            for (int i = 0; i < this.layers[l].length; i++) {
+                Unit unit = this.layers[l][i];
                 double sum = 0.0;
-                for(Connection c : this.layers[i][j].outgoingConnections)
-                    sum += c.dst.delta*c.weight;
-                this.layers[i][j].delta = h*(1-h)*sum;
-                for(Connection c : this.layers[i][j].outgoingConnections)
-                    c.weight += alpha*h*c.dst.delta;
+                for (Connection conn : unit.outgoingConnections) {
+                    double cak = conn.dst.delta;
+                    sum += conn.weight * cak;
+                }
+
+                double error = ((LogisticUnit) unit).activationPrime(((NeuronUnit) unit).getInputSum()) * sum;
+                unit.delta = error;
+//                System.out.println("cak "  + unit.delta);
+            }
+        }
+        for (int l = 1; l < this.layers.length; l++) {
+            NeuronUnit units[] = (NeuronUnit[]) this.layers[l];
+            for (int i = 0; i < units.length; i++) {
+                for (Connection conn : this.layers[l][i].incomingConnections) {
+                    double cak = conn.dst.delta;
+                    conn.weight += alpha * conn.src.getOutput() * cak;
+//                    System.out.println("cak " + conn.weight);
+                }
             }
         }
         // for each node j in the output layer do

@@ -9,7 +9,7 @@ import java.io.IOException;
 public class PerceptronClassifierEarthquakeNoisyDecaying extends PerceptronClassifierTest {
 
 	public static void main(String[] args) throws IOException {
-		test("src/learn/lc/examples/earthquake-noisy.data.txt", 10000, 0);
+		test("src/learn/lc/examples/earthquake-noisy.data.txt", 100000, 0);
 	}
 
 }

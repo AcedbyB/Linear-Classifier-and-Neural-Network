@@ -24,6 +24,10 @@ public class PerceptronUnit extends NeuronUnit {
 	 */
 	@Override
 	public void update(double[] x, double y, double alpha) {
-		// This must be implemented by you
+		double hw = h_w(x);
+		this.incomingConnections.get(0).weight += alpha*(y-hw);
+		for (int i = 0; i < this.incomingConnections.size()-1; i++){
+			this.incomingConnections.get(i+1).weight += alpha*(y - hw)*x[i];
+		}
 	}
 }

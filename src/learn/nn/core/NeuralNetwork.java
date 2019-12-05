@@ -12,6 +12,8 @@ abstract public class NeuralNetwork {
 	
 	abstract public InputUnit[] getInputUnits();
 	abstract public NeuronUnit[] getOutputUnits();
+	public ArrayList<Double> accuracy = new ArrayList<>();
+	public boolean addToAccuracy = true;
 	
 	//
 	// Listener

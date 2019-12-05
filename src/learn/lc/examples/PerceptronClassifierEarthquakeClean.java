@@ -8,7 +8,7 @@ import java.io.IOException;
 public class PerceptronClassifierEarthquakeClean extends PerceptronClassifierTest {
 
 	public static void main(String[] args) throws IOException {
-		test("src/learn/lc/examples/earthquake-clean.data.txt", 1000, 0.95);
+		test("src/learn/lc/examples/earthquake-clean.data.txt", 700, 0.95);
 	}
 
 }

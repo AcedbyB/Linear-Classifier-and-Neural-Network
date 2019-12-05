@@ -91,7 +91,7 @@ public class MNIST {
 		int n = istream.count;
 		List<Example> examples = new ArrayList<Example>(n);
 		for (int i=0; i < n; i++) {
-			System.out.println(i);
+			//System.out.println(i);
 			int[] imageData = istream.nextImage();
 			int label = lstream.nextLabel();
 			double[] inputs = new double[imageData.length];

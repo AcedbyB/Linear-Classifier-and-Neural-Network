@@ -17,7 +17,6 @@ abstract public class LinearClassifier {
 
     public LinearClassifier(int ninputs) {
         this.weights = new double[ninputs];
-        for (int i = 0; i < weights.length; i++) weights[i] = 0;
     }
 
     /**

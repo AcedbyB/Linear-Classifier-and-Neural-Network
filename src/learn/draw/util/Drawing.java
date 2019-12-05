@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Drawing {
 
     static public void drawLoss(ArrayList<Double> loss) {
-        JFrame frame = new JFrame("Loss by Iterations");
+        JFrame frame = new JFrame("Accuracy on Test by Epochs");
         frame.setSize(600, 600);
         Painting painting = new Painting();
         painting.numsteps = loss.size();

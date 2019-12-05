@@ -3,6 +3,7 @@ package learn.nn.examples;
 import java.io.IOException;
 import java.util.List;
 
+import learn.draw.util.Drawing;
 import learn.nn.core.Example;
 import learn.nn.core.MultiLayerFeedForwardNeuralNetwork;
 
@@ -23,7 +24,7 @@ public class XorNN extends MultiLayerFeedForwardNeuralNetwork {
 	}
 	
 	public static void main(String[] argv) throws IOException {
-		int epochs = 100;
+		int epochs = 3000;
 		double alpha = 0.10;
 		int nexamples = 1000;
 		XorExampleGenerator generator = new XorExampleGenerator();
@@ -31,6 +32,9 @@ public class XorNN extends MultiLayerFeedForwardNeuralNetwork {
 		System.out.println("XorNN: Training on " + nexamples + " examples for " + epochs + " epochs, alpha=" + alpha);
 		List<Example> trainingSet = generator.examples(nexamples);
 		network.train(trainingSet, epochs, alpha);
+		network.addToAccuracy = false;
+		System.out.println(network.accuracy.size());
+		Drawing.drawLoss(network.accuracy);
 		network.dump();
 		List<Example> testingSet = generator.examples(nexamples);
 		double accuracy = network.test(testingSet);
